@@ -379,6 +379,21 @@ body {
   max-width: 270px;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
   will-change: transform;
+  position: relative;
+}
+
+.polaroid-frame::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.055; /* Faint paper texture overlay (5.5%) */
+  pointer-events: none;
+  border-radius: 2px;
+  z-index: 1;
 }
 
 .polaroid-frame:hover {
@@ -398,8 +413,30 @@ body {
   width: 100%;
   background-color: #e5dec9;
   position: relative;
+  z-index: 2; /* Sits on top of the border texture overlay */
   overflow: hidden;
   border: 1px solid rgba(74, 63, 53, 0.05);
+}
+
+/* Polaroid bow knot accent */
+.polaroid-bow {
+  position: absolute;
+  z-index: 10; /* Sits above the card and photo loop */
+  pointer-events: none;
+  filter: drop-shadow(0 1.5px 3px rgba(74, 63, 53, 0.15));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.polaroid-bow.top-left {
+  top: -6px;
+  left: -6px;
+}
+
+.polaroid-bow.top-right {
+  top: -6px;
+  right: -6px;
 }
 
 .polaroid-media-box.ratio-4-5 {

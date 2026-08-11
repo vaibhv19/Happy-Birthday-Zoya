@@ -1,5 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+const BowAccent = ({ corner = 'top-left', isGold = false }) => {
+  const primaryColor = isGold ? '#C5A059' : '#E8C5C8';
+  const strokeColor = isGold ? '#8C6A2E' : '#C38B90';
+  
+  return (
+    <div className={`polaroid-bow ${corner}`} aria-hidden="true">
+      <svg viewBox="0 0 40 40" width="20" height="20">
+        {/* Left Loop */}
+        <path d="M20 20 C10 10, 5 15, 10 20 C15 25, 20 20, 20 20 Z" fill={primaryColor} stroke={strokeColor} strokeWidth="1.5" />
+        {/* Right Loop */}
+        <path d="M20 20 C30 10, 35 15, 30 20 C25 25, 20 20, 20 20 Z" fill={primaryColor} stroke={strokeColor} strokeWidth="1.5" />
+        {/* Left Tail */}
+        <path d="M20 20 Q12 30, 8 32 Q14 30, 20 20" fill={primaryColor} stroke={strokeColor} strokeWidth="1.5" />
+        {/* Right Tail */}
+        <path d="M20 20 Q28 30, 32 32 Q26 30, 20 20" fill={primaryColor} stroke={strokeColor} strokeWidth="1.5" />
+        {/* Knot Center */}
+        <circle cx="20" cy="20" r="3.5" fill={strokeColor} />
+      </svg>
+    </div>
+  );
+};
+
 const MediaWindow = ({ mediaItems = [], aspectRatio = "4:5", rotation = 0 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [inView, setInView] = useState(false);
@@ -104,6 +126,10 @@ const MediaWindow = ({ mediaItems = [], aspectRatio = "4:5", rotation = 0 }) => 
     transform: prefersReducedMotion.current ? 'none' : `rotate(${rotation}deg)`,
   };
 
+  // Statically determine bow position and color from rotation value
+  const bowCorner = Math.abs(rotation) % 2 > 1 ? 'top-right' : 'top-left';
+  const isGoldBow = Math.abs(rotation) % 1 > 0.5;
+
   const isWide = aspectRatio === "5:4";
 
   return (
@@ -112,6 +138,7 @@ const MediaWindow = ({ mediaItems = [], aspectRatio = "4:5", rotation = 0 }) => 
       className={`polaroid-frame ${isWide ? 'wide' : ''}`}
       style={polaroidStyle}
     >
+      <BowAccent corner={bowCorner} isGold={isGoldBow} />
       <div className={`polaroid-media-box ratio-${aspectRatio.replace(':', '-')}`}>
         {mediaItems.map((item, index) => {
           const isActive = index === activeIndex;
