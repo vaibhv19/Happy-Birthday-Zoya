@@ -1,0 +1,840 @@
+/* CSS Custom Properties for Design System */
+:root {
+    --bg-color: #FAF6F0;
+    --text-color: #3D352E;
+    --text-muted: #7A6F64;
+    --accent-blush: #E8C5C8;
+    --accent-blush-dark: #C99FA3;
+    --accent-gold: #C5A059;
+    --accent-gold-light: #F4EFE6;
+    
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-script: 'Alex Brush', cursive;
+    --font-handwritten: 'Kalam', cursive, sans-serif;
+    
+    --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-quick: all 0.3s ease;
+}
+
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--accent-blush);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-blush-dark);
+}
+
+/* Ambient Canvas Overlay */
+#ambient-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+/* Floating Audio Control Button */
+.audio-btn {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--accent-blush);
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(8px);
+    transition: var(--transition-quick);
+}
+
+.audio-btn .icon {
+    width: 20px;
+    height: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Sections Base */
+.section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 60px 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Fade in animations */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 1. LANDING SCREEN */
+#section-landing {
+    background-color: var(--bg-color);
+    text-align: center;
+    z-index: 10;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1), opacity 1.2s ease;
+}
+
+#section-landing.slide-up {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.landing-content {
+    max-width: 600px;
+    padding: 20px;
+}
+
+.warning-text {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.35rem;
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: 40px;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: transparent;
+    border: 1px solid var(--accent-gold);
+    color: var(--text-color);
+    padding: 14px 28px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    transition: var(--transition-quick);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-primary span:first-child {
+    font-weight: 500;
+}
+
+.btn-subtext {
+    font-size: 0.65rem;
+    text-transform: none;
+    letter-spacing: 0.05em;
+    opacity: 0.6;
+    margin-top: 4px;
+}
+
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--accent-gold-light);
+    z-index: -1;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--accent-blush);
+    color: var(--text-muted);
+    padding: 10px 20px;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: var(--transition-quick);
+}
+
+
+/* 2. NAME REVEAL */
+#section-reveal {
+    text-align: center;
+    background: linear-gradient(180deg, var(--bg-color) 0%, rgba(250, 246, 240, 0.5) 100%);
+}
+
+.reveal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+}
+
+.sub-heading {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 1.5s ease 0.2s, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+}
+
+.name-text {
+    font-family: var(--font-script);
+    font-size: clamp(3.5rem, 15vw, 6.5rem);
+    line-height: 1.1;
+    color: var(--accent-gold);
+    margin-bottom: 20px;
+    font-weight: normal;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 2s ease 0.6s, transform 2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s;
+}
+
+.tagline-text {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-style: italic;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 1.5s ease 1s, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1) 1s;
+    margin-bottom: 25px;
+}
+
+/* Trigger reveal animations on section active */
+#section-reveal.revealed .sub-heading,
+#section-reveal.revealed .name-text,
+#section-reveal.revealed .tagline-text {
+    opacity: 1;
+    transform: translate(0) scale(1);
+}
+
+/* Scroll Prompt */
+.scroll-prompt {
+    position: absolute;
+    bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+.scroll-arrow {
+    width: 1px;
+    height: 40px;
+    background-color: var(--text-muted);
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.scroll-arrow::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--accent-gold);
+    animation: scrollScroll 2s infinite ease-in-out;
+}
+
+@keyframes scrollScroll {
+    0% { transform: translateY(-100%); }
+    80% { transform: translateY(100%); }
+    100% { transform: translateY(100%); }
+}
+
+/* 3. GALLERY SECTION */
+#section-gallery {
+    background-color: var(--accent-gold-light);
+    padding: 100px 20px;
+}
+
+.section-title {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.section-subtitle {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+/* Grid & Polaroid Cards */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    justify-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+@media(min-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 60px 40px;
+    }
+}
+
+.gallery-card.polaroid {
+    background-color: #fff;
+    padding: 16px 16px 36px 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    border-radius: 2px;
+    width: 100%;
+    max-width: 320px;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tilt effects */
+.rot-left {
+    transform: rotate(-2deg);
+}
+
+.rot-right {
+    transform: rotate(2deg);
+}
+
+
+.polaroid-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/5;
+    background-color: var(--accent-gold-light);
+    overflow: hidden;
+    border-radius: 1px;
+}
+
+.polaroid-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+}
+
+.gallery-card.polaroid:hover .polaroid-image-wrapper img {
+    transform: scale(1.03);
+}
+
+/* Video Card specific */
+.video-wrapper {
+    background-color: #000;
+}
+
+.video-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.polaroid-caption {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    text-align: center;
+    color: var(--text-color);
+    margin-top: 18px;
+    line-height: 1.4;
+}
+
+
+
+.envelope-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.envelope-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    height: 380px;
+    margin: 40px auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* CSS Animated Envelope */
+.envelope {
+    position: relative;
+    width: 320px;
+    height: 220px;
+    background-color: var(--accent-blush);
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(61, 53, 46, 0.08);
+    cursor: pointer;
+    perspective: 1000px;
+    transition: transform 0.6s ease;
+}
+
+
+/* Flaps & Parts */
+.envelope-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #dec0c3; /* slightly darker blush */
+    border-radius: 4px;
+    z-index: 1;
+}
+
+.envelope-top-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 160px solid transparent;
+    border-right: 160px solid transparent;
+    border-top: 110px solid #dec0c3; /* Flap folds down */
+    transform-origin: top;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 4;
+}
+
+.envelope-front {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 160px solid #ebd0d2; /* Left side */
+    border-right: 160px solid #ebd0d2; /* Right side */
+    border-bottom: 110px solid var(--accent-blush); /* Bottom part */
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    border-radius: 0 0 4px 4px;
+}
+
+/* Letter inside */
+.envelope-letter {
+    position: absolute;
+    bottom: 0;
+    left: 15px;
+    width: 290px;
+    height: 190px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 2px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    z-index: 2;
+    transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), 
+                width 0.8s cubic-bezier(0.77, 0, 0.175, 1), 
+                height 0.8s cubic-bezier(0.77, 0, 0.175, 1), 
+                left 0.8s cubic-bezier(0.77, 0, 0.175, 1),
+                box-shadow 0.5s ease;
+    overflow: hidden;
+}
+
+.letter-flourish {
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--accent-gold);
+    opacity: 0.8;
+}
+
+.flourish-svg {
+    width: 60px;
+    height: 12px;
+}
+
+.letter-content {
+    opacity: 0.4;
+    transition: opacity 0.5s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.7rem;
+    line-height: 1.4;
+}
+
+
+.letter-body {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+    color: var(--text-muted);
+    text-align: left; /* Left-aligned for handwritten/personal feel */
+}
+
+.letter-body::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome/Safari/Webkit */
+}
+
+.letter-body p {
+    margin-bottom: 8px;
+}
+
+.letter-footer {
+    margin-top: 10px;
+    font-weight: 500;
+    text-align: center; /* Keep signature centered */
+}
+
+.signature {
+    font-family: var(--font-script);
+    font-size: 1.1rem;
+    color: var(--accent-gold);
+}
+
+/* Open Envelope States */
+.envelope.open .envelope-top-flap {
+    transform: rotateX(180deg);
+    z-index: 1; /* flip behind the letter */
+    border-top-color: #ebd0d2;
+}
+
+.envelope.open .envelope-letter {
+    transform: translateY(-110px);
+    z-index: 5;
+    box-shadow: 0 15px 35px rgba(61, 53, 46, 0.15);
+}
+
+/* Expanded Reading State */
+.envelope.expanded {
+    cursor: default;
+    transform: none !important;
+    perspective: none !important;
+}
+
+.envelope.expanded .envelope-letter {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 92%;
+    max-width: 580px; /* Increased max-width to allow more text room per line */
+    height: auto !important; /* Forces height to strictly match content */
+    z-index: 200;
+    padding: 35px 35px; /* Wider padding for balanced, spacious aesthetic */
+    border-radius: 8px;
+    box-shadow: 0 30px 60px rgba(61, 53, 46, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: visible !important; /* Allow the box itself to grow tall with no boundaries */
+    transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), 
+                width 0.8s cubic-bezier(0.77, 0, 0.175, 1), 
+                left 0.8s cubic-bezier(0.77, 0, 0.175, 1),
+                box-shadow 0.5s ease !important; /* Disable height transition when expanded to prevent 190px clipping lock */
+}
+
+/* Overlay background for reading letter */
+.letter-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(61, 53, 46, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+}
+
+.letter-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.envelope.expanded .letter-content {
+    height: auto;
+    max-height: 100%;
+    opacity: 1;
+}
+
+.envelope.expanded .letter-body {
+    font-family: var(--font-handwritten); /* Legible, natural handwriting font for body paragraphs */
+    font-size: 1.2rem; /* Legible Kalam size */
+    font-weight: 400; /* Regular weight */
+    line-height: 1.7; /* Generous vertical spacing for connected script glyphs */
+    overflow: visible !important; /* Disable all internal scrolling so container expands naturally */
+}
+
+
+.envelope.expanded .letter-body p {
+    margin-bottom: 10px; /* Adjusted margins for Kalam script height compatibility */
+}
+
+.envelope.expanded .letter-footer {
+    font-family: var(--font-script); /* Elegant script font for closing greeting */
+    font-size: 1.55rem; /* Larger script size for signature line readability */
+    line-height: 1.3;
+    margin-top: 15px;
+}
+
+.envelope.expanded .signature {
+    font-size: 1.8rem; /* Standout signature font size */
+}
+
+/* Adjustments for smaller viewport heights (mobile / landscape) */
+@media (max-height: 700px) {
+    .envelope.expanded .envelope-letter {
+        padding: 16px 20px;
+        height: auto !important;
+        overflow: visible !important;
+    }
+    .envelope.expanded .letter-body {
+        font-size: 0.98rem; /* Balanced mobile Kalam size to prevent overflow */
+        font-weight: 400;
+        line-height: 1.55;
+    }
+    .envelope.expanded .letter-body p {
+        margin-bottom: 5px; /* Compact paragraph spacing for mobile view height */
+    }
+    .envelope.expanded .letter-flourish {
+        margin-bottom: 6px;
+    }
+    .envelope.expanded .flourish-svg {
+        width: 40px;
+        height: 8px;
+    }
+    .envelope.expanded .letter-footer {
+        font-family: var(--font-script);
+        font-size: 1.25rem; /* Scale down closing script on mobile */
+        line-height: 1.25;
+        margin-top: 8px;
+    }
+    .envelope.expanded .signature {
+        font-size: 1.5rem;
+    }
+}
+
+/* Controls */
+.message-controls {
+    margin-top: 30px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.message-controls.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 5. CLOSING SECTION */
+#section-closing {
+    background-color: var(--bg-color);
+    text-align: center;
+    padding: 120px 20px;
+}
+
+.closing-content {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.closing-quote {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin-bottom: 30px;
+    font-weight: 400;
+}
+
+.heart-symbol {
+    font-size: 1.8rem;
+    color: var(--accent-blush-dark);
+    display: inline-block;
+    animation: heartbeat 1.8s infinite ease-in-out;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+/* Accessibility: Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-delay: -1ms !important;
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        background-attachment: initial !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+    }
+    
+    .gallery-card.polaroid {
+        transform: none !important;
+    }
+    
+    .gallery-card.polaroid:hover {
+        transform: translateY(-4px) !important;
+    }
+    
+    .rot-left, .rot-right {
+        transform: none !important;
+    }
+    
+    .scroll-arrow::after {
+        animation: none !important;
+        top: auto;
+        bottom: 0;
+    }
+    
+    .heart-symbol {
+        animation: none !important;
+    }
+}
+
+/* Hover-only device styles */
+@media (hover: hover) {
+    .audio-btn:hover {
+        background-color: #fff;
+        transform: scale(1.05);
+        border-color: var(--accent-gold);
+    }
+    .btn-primary:hover {
+        color: var(--accent-gold);
+        border-color: var(--accent-gold);
+    }
+    .btn-primary:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+    .btn-secondary:hover {
+        border-color: var(--accent-blush-dark);
+        color: var(--text-color);
+        background-color: rgba(232, 197, 200, 0.1);
+    }
+    .gallery-card.polaroid:hover {
+        transform: rotate(0deg) translateY(-10px);
+        box-shadow: 0 20px 40px rgba(61, 53, 46, 0.08);
+        z-index: 10;
+    }
+    .envelope:hover {
+        transform: translateY(-5px);
+    }
+}
+
+/* Mobile Responsiveness Rules (max-width: 480px) */
+@media (max-width: 480px) {
+    .audio-btn {
+        top: 16px;
+        right: 16px;
+        width: 42px;
+        height: 42px;
+    }
+    .audio-btn .icon {
+        width: 18px;
+        height: 18px;
+    }
+    .rot-left, .rot-right {
+        transform: rotate(0deg) !important;
+    }
+    .gallery-card.polaroid {
+        max-width: 100%;
+        padding: 12px 12px 28px 12px;
+    }
+    .section-title {
+        font-size: 1.8rem;
+    }
+    .section-subtitle {
+        font-size: 0.85rem;
+        margin-bottom: 40px;
+    }
+    .closing-quote {
+        font-size: 1.4rem;
+    }
+}
+
+/* Extra small viewport adjustment (width under 360px) */
+@media (max-width: 360px) {
+    .envelope-wrapper {
+        transform: scale(0.85);
+        margin: 10px auto;
+        height: 320px;
+    }
+}
