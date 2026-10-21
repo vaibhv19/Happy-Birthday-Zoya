@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ParticleBackground from './components/ParticleBackground';
 import AudioController from './components/AudioController';
 import Landing from './components/Landing';
@@ -6,13 +6,25 @@ import LetterFlow from './components/LetterFlow';
 
 function App() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [triggerPlay, setTriggerPlay] = useState(false);
   const [showLetter, setShowLetter] = useState(false);
   const [isLandingMounted, setIsLandingMounted] = useState(true);
+  const audioRef = useRef(null);
 
   const handleOpenInitiated = () => {
-    // Start audio
-    setTriggerPlay(true);
+    // Start audio playback directly in the synchronous click interaction stack
+    if (audioRef.current && audioRef.current.paused) {
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch((err) => {
+            console.debug("Audio play failed or was blocked by policy:", err);
+            setIsPlaying(false);
+          });
+      }
+    }
     // Mount the letter so it is ready and rendering underneath the landing screen
     setShowLetter(true);
   };
@@ -29,9 +41,9 @@ function App() {
 
       {/* Background music controller */}
       <AudioController 
+        audioRef={audioRef}
         isPlaying={isPlaying} 
         setIsPlaying={setIsPlaying} 
-        triggerPlay={triggerPlay} 
       />
 
       {/* Main birthday letter content */}

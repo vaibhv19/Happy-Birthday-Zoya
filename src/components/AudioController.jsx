@@ -58,3 +58,4 @@ const AudioController = ({ isPlaying, setIsPlaying, audioRef }) => {
 };
 
 export default AudioController;
+
