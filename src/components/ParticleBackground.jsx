@@ -128,7 +128,7 @@ const ParticleBackground = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="particle-canvas" />;
+  return <canvas ref={canvasRef} className="particle-canvas" aria-hidden="true" />;
 };
 
 export default ParticleBackground;
