@@ -1,62 +1,81 @@
 import React, { useMemo } from 'react';
 import MediaWindowCluster from './MediaWindowCluster';
+import { birthdayConfig } from '../birthday.config';
 
-// Dynamically import all media assets using Vite's glob import
-const photos45Modules = import.meta.glob('../assets/4;5/*.{png,jpg,jpeg,PNG,JPG,JPEG}', { eager: true });
-const photos54Modules = import.meta.glob('../assets/5;4/*.{png,jpg,jpeg,PNG,JPG,JPEG}', { eager: true });
-const videosModules = import.meta.glob('../assets/vid/*.{mp4,MP4}', { eager: true });
+// Dynamically import optimized media assets using Vite's glob import
+const portraitModules = import.meta.glob('../assets/portrait/*.webp', { eager: true });
+const landscapeModules = import.meta.glob('../assets/landscape/*.webp', { eager: true });
+const videoModules = import.meta.glob('../assets/vid/*.mp4', { eager: true });
 
-const photos45 = Object.values(photos45Modules).map(mod => mod.default || mod);
-const photos54 = Object.values(photos54Modules).map(mod => mod.default || mod);
-const videos = Object.values(videosModules).map(mod => mod.default || mod);
+const portraitPhotos = Object.values(portraitModules).map(mod => mod.default || mod);
+const landscapePhotos = Object.values(landscapeModules).map(mod => mod.default || mod);
+const videos = Object.values(videoModules).map(mod => mod.default || mod);
 
-// Exact text from assets/text.txt
-const paragraphs = [
-  "This city would feel a lot emptier without you — you're the closest thing to home I've got here.",
-  "You've listened to my nonsense more times than anyone should have to. You've quietly cleared more of my rough days than you probably even remember.",
-  "Somehow, every conversation with you teaches me something.",
-  "Thanks for putting up with me, for all the terrible junk food we've eaten together slowly ruining any chance I had at a six-pack, and for the borderline assault every time I opened my mouth.",
-  "Happy birthday, dear. Glad you exist. Cheers to another year of me annoying you."
-];
+/**
+ * Dynamically distribute media items across target windows based on relative weights.
+ * Ensures zero empty windows if media collection count changes next year.
+ */
+function distributeItems(items, targetWeights) {
+  if (!items || items.length === 0) return targetWeights.map(() => []);
+  const totalWeight = targetWeights.reduce((a, b) => a + b, 0);
+  let start = 0;
+  return targetWeights.map((weight, i) => {
+    if (i === targetWeights.length - 1) {
+      return items.slice(start);
+    }
+    const count = Math.max(1, Math.round((weight / totalWeight) * items.length));
+    const slice = items.slice(start, start + count);
+    start += count;
+    return slice;
+  });
+}
 
 const LetterFlow = () => {
-  // Define clusters configurations stably using useMemo
+  const { paragraphs, header, tagline, sender } = birthdayConfig;
+
+  // Stably configure Polaroid clusters based on available media
   const clusters = useMemo(() => {
+    // 9 portrait windows distributed across the 4 narrative clusters
+    const portraitSlices = distributeItems(portraitPhotos, [6, 6, 4, 4, 8, 8, 6, 6, 5]);
+    
+    // 2 video windows distributed across Cluster 2 and Cluster 4
+    const videoSlices = distributeItems(videos, [3, 4]);
+
     return [
       // Cluster 1: After Paragraph 1
       [
-        { mediaItems: photos45.slice(0, 6), aspectRatio: "4:5" },
-        { mediaItems: photos45.slice(6, 12), aspectRatio: "4:5" }
+        { mediaItems: portraitSlices[0], aspectRatio: "4:5" },
+        { mediaItems: portraitSlices[1], aspectRatio: "4:5" }
       ],
       // Cluster 2: After Paragraph 2
       [
-        { mediaItems: videos.slice(0, 3), aspectRatio: "4:5" },
-        { mediaItems: photos45.slice(12, 16), aspectRatio: "4:5" },
-        { mediaItems: photos45.slice(16, 20), aspectRatio: "4:5" },
-        { mediaItems: photos54, aspectRatio: "5:4" } // Exactly one 5:4 aspect ratio polaroid
+        { mediaItems: videoSlices[0], aspectRatio: "4:5" },
+        { mediaItems: portraitSlices[2], aspectRatio: "4:5" },
+        { mediaItems: portraitSlices[3], aspectRatio: "4:5" },
+        { mediaItems: landscapePhotos, aspectRatio: "5:4" } // 5:4 aspect ratio polaroid
       ],
       // Cluster 3: After Paragraph 3
       [
-        { mediaItems: photos45.slice(20, 28), aspectRatio: "4:5" },
-        { mediaItems: photos45.slice(28, 36), aspectRatio: "4:5" }
+        { mediaItems: portraitSlices[4], aspectRatio: "4:5" },
+        { mediaItems: portraitSlices[5], aspectRatio: "4:5" }
       ],
       // Cluster 4: After Paragraph 4
       [
-        { mediaItems: videos.slice(3, 7), aspectRatio: "4:5" },
-        { mediaItems: photos45.slice(36, 42), aspectRatio: "4:5" },
-        { mediaItems: photos45.slice(42, 48), aspectRatio: "4:5" },
-        { mediaItems: photos45.slice(48, 53), aspectRatio: "4:5" }
+        { mediaItems: videoSlices[1], aspectRatio: "4:5" },
+        { mediaItems: portraitSlices[6], aspectRatio: "4:5" },
+        { mediaItems: portraitSlices[7], aspectRatio: "4:5" },
+        { mediaItems: portraitSlices[8], aspectRatio: "4:5" }
       ]
     ];
   }, []);
 
   return (
-    <div className="main-content">
+    <main className="main-content">
       <div className="letter-wrapper">
         {/* Header Section */}
         <header className="birthday-header">
           <h1 className="header-h1">
-            Happy Birthday <span className="header-name">Zoya</span>
+            {header.greeting} <span className="header-name">{header.name}</span>
           </h1>
         </header>
 
@@ -89,16 +108,16 @@ const LetterFlow = () => {
 
         {/* Closing Tagline */}
         <div className="letter-tagline">
-          "kind in a way that doesn't ask for credit"
+          {tagline}
         </div>
 
         {/* Signature Block */}
         <div className="letter-closing">
-          <span className="closing-phrase">With love,</span>
-          <span className="closing-signature">Vaibhav</span>
+          <span className="closing-phrase">{sender.closingPhrase}</span>
+          <span className="closing-signature">{sender.name}</span>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
