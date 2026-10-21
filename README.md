@@ -298,27 +298,30 @@ The application compiles into standard static assets (HTML, CSS, JS, and optimiz
 
 ---
 
-## Content Maintenance Guide
+## Annual Birthday Update Guide (Next Year's Update)
 
-### Modifying Narrative Letter Copy
+To update this website for Zoya's next birthday:
 
-The letter paragraphs and closing signature are defined in [`src/components/LetterFlow.jsx`](src/components/LetterFlow.jsx):
+### 1. Update the Birthday Message and Names
+Open [`src/birthday.config.js`](src/birthday.config.js) and update:
+- `paragraphs`: Edit the five narrative message paragraphs.
+- `tagline`: Update the highlighted quote / closing tagline.
+- `recipient` / `header`: Modify greeting or title text if desired.
 
-```javascript
-// Update paragraph text array
-const paragraphs = [
-  "Paragraph 1 text...",
-  "Paragraph 2 text...",
-  // ...
-];
+### 2. Replace Photographs and Videos
+Place optimized media into the following directories:
+1. **Portrait Photos (4:5)**: Add WebP or JPG photos to [`src/assets/portrait/`](src/assets/portrait/).
+2. **Landscape Photos (5:4)**: Add WebP or JPG photos to [`src/assets/landscape/`](src/assets/landscape/).
+3. **Video Clips**: Add MP4 video loops to [`src/assets/vid/`](src/assets/vid/).
+4. **Background Music**: Replace [`src/assets/aud/Birthday-site.mp3`](src/assets/aud/Birthday-site.mp3) with an updated audio track if desired.
+
+*Note: The layout engine dynamically and evenly distributes photos and videos across all four memory clusters. You do not need to touch any code or `.slice()` indices.*
+
+### 3. Build and Deploy
+```bash
+npm run build
 ```
-
-### Adding or Replacing Photos & Videos
-
-1. **Portrait Photos (4:5)**: Place `.jpg` or `.png` images into [`src/assets/4;5/`](src/assets/4;5/). Vite will automatically detect and include them in the cluster slice mappings.
-2. **Landscape Photos (5:4)**: Place `.jpg` or `.png` images into [`src/assets/5;4/`](src/assets/5;4/).
-3. **Video Clips**: Place `.mp4` files into [`src/assets/vid/`](src/assets/vid/).
-4. **Background Music**: Replace [`src/assets/aud/Birthday-site.mp3`](src/assets/aud/Birthday-site.mp3) with an audio file of your choice.
+Deploy the generated `dist/` directory to your static hosting provider.
 
 ---
 
