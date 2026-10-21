@@ -1,30 +1,30 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import birthdaySong from '../assets/aud/Birthday-site.mp3';
+import { birthdayConfig } from '../birthday.config';
 
-const AudioController = ({ isPlaying, setIsPlaying, triggerPlay }) => {
-  const audioRef = useRef(null);
-
-  // Handle play triggers (e.g., when envelope is tapped)
-  useEffect(() => {
-    if (triggerPlay && audioRef.current) {
-      audioRef.current.play()
-        .then(() => setIsPlaying(true))
-        .catch(err => console.log("Audio play failed due to interaction policy:", err));
-    }
-  }, [triggerPlay, setIsPlaying]);
-
-  // Sync isPlaying state with audio element
-  useEffect(() => {
-    if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.play().catch(() => {});
-    } else {
-      audioRef.current.pause();
-    }
-  }, [isPlaying]);
+const AudioController = ({ isPlaying, setIsPlaying, audioRef }) => {
+  const { audio } = birthdayConfig;
 
   const toggleMute = () => {
-    setIsPlaying(!isPlaying);
+    const audioElement = audioRef?.current;
+    if (!audioElement) return;
+
+    if (isPlaying) {
+      audioElement.pause();
+      setIsPlaying(false);
+    } else {
+      const playPromise = audioElement.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch((err) => {
+            console.debug("Audio play retry failed:", err);
+            setIsPlaying(false);
+          });
+      }
+    }
   };
 
   return (
@@ -33,13 +33,13 @@ const AudioController = ({ isPlaying, setIsPlaying, triggerPlay }) => {
         ref={audioRef}
         src={birthdaySong}
         loop
-        preload="auto"
+        preload="none"
       />
       <button 
         className="audio-toggle" 
         onClick={toggleMute}
-        aria-label={isPlaying ? "Mute Background Music" : "Play Background Music"}
-        title={isPlaying ? "Mute music" : "Play music"}
+        aria-label={isPlaying ? audio.ariaMute : audio.ariaPlay}
+        title={isPlaying ? audio.titleMute : audio.titlePlay}
       >
         {isPlaying ? (
           // Speaker icon with waves
