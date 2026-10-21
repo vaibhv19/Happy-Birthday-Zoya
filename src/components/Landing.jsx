@@ -6,19 +6,20 @@ const Landing = ({ onOpenComplete, onOpenInitiated }) => {
 
   const handleEnvelopeClick = () => {
     if (isOpen) return;
-
-    setIsOpen(true);
-    // Notify parent to start audio immediately (upon user gesture)
+    
+    // Start music and mount the main letter immediately on click interaction
     if (onOpenInitiated) {
       onOpenInitiated();
     }
 
-    // Wait for the opening animations (flap flip + letter slide-up) to finish
+    setIsOpen(true);
+
+    // After envelope opens, begin fading out the landing overlay
     setTimeout(() => {
       setIsFadingOut(true);
     }, 1800);
 
-    // Wait for the fade-out transition of the landing screen to finish before unmounting
+    // Completely unmount after fade-out transition completes
     setTimeout(() => {
       if (onOpenComplete) {
         onOpenComplete();
@@ -26,34 +27,40 @@ const Landing = ({ onOpenComplete, onOpenInitiated }) => {
     }, 2800);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleEnvelopeClick();
+    }
+  };
+
   return (
-    <div className={`landing-container ${isFadingOut ? 'fade-out' : ''}`}>
+    <div className={landing-container }>
       <div 
-        className={`envelope-wrapper ${isOpen ? 'open' : ''}`}
+        className={envelope-wrapper }
         onClick={handleEnvelopeClick}
+        onKeyDown={handleKeyDown}
+        role="button"
+        tabIndex={0}
+        aria-label={isOpen ? "Opening birthday envelope" : "Open birthday envelope"}
       >
         <div className="envelope">
           {/* Flap of the envelope */}
           <div className="envelope-flap"></div>
           
-          {/* Left/Right fold visuals */}
-          <div className="envelope-sides"></div>
-          <div className="envelope-sides-right"></div>
-          
-          {/* Bottom pocket */}
+          {/* Pocket / front panels */}
           <div className="envelope-pocket"></div>
-          
+
           {/* Golden Wax Seal */}
-          <div className="wax-seal"></div>
+          <div className="envelope-seal">
+            <span className="seal-emblem">Z</span>
+          </div>
 
           {/* Letter card that slides out */}
           <div className="envelope-letter">
             <span className="envelope-letter-name">To Zoya</span>
           </div>
         </div>
-      </div>
-      <div className="envelope-hint">
-        {isOpen ? "Opening..." : "Tap to open"}
       </div>
     </div>
   );
