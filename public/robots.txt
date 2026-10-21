@@ -1,0 +1,4 @@
+# Direct-sharing birthday website.
+# Crawlers are allowed to access the page so they can parse the noindex directive in HTML metadata.
+User-agent: *
+Disallow:
